@@ -37,6 +37,7 @@ namespace RockPaperScissors
                 isRunning = playAgain(); // play again? Prompt the user and restart the game;
             } while (isRunning);
         }
+
         static bool playGame()
         {
             string answer;
@@ -135,6 +136,10 @@ namespace RockPaperScissors
         }
 
         static void championDecider(string myWeapon, string enemyWeapon)
+
+            // add a value indicator
+            //return an integer for player win status
+            //return an integer for computer win status
         {
             if (myWeapon == enemyWeapon)
             {
@@ -186,6 +191,13 @@ namespace RockPaperScissors
 
         static bool playAgain()
         {
+
+            Console.WriteLine();
+            Console.WriteLine("---------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Do you want to play again?");
+            Console.WriteLine("Enter 'Y' to play again or 'N' to exit");
+
             bool nextRound = false;
             bool decisionLoop = true;
             string playerDecision = Console.ReadLine();
@@ -193,7 +205,7 @@ namespace RockPaperScissors
             string newAnswer;
 
 
-            Console.WriteLine("Do you want to play again?");
+            
 
             while (decisionLoop)
             {
