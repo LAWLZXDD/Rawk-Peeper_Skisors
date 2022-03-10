@@ -14,12 +14,19 @@ namespace RockPaperScissors
             string playerWeapon;
             int weaponNumber;
             string computerWeapon;
+            var (playerWins, computerWins, draws, victoryMessage) = (false, false, false, " ");
+            //var (numberOfPlayerWins, numberOfComputerWins, numberOfDraws) = (0,0,0);
+            int totalDraws = 0;
+            int totalPlayerWins = 0;
+            int totalComputerWins = 0;
 
             Console.WriteLine("Do you want to play Rock, Paper, Scissors?");
             Console.WriteLine("Enter Y to play or N to exit");
+            Console.WriteLine(); // spacing
 
             isRunning = playGame(); // determine if player wants to play. Y = continue, N = exit, invalid = reprompt;
-
+            Console.WriteLine("********************** Fight Area **********************"); // spacing
+            Console.WriteLine(); // spacing
 
             do
             {
@@ -30,10 +37,28 @@ namespace RockPaperScissors
                 Console.WriteLine(); // spacing
                 Console.WriteLine($"You: {playerWeapon}"); // feedback to user;
                 Console.WriteLine($"Computer: {computerWeapon}"); // feedback to user;
-                Console.WriteLine();
+                Console.WriteLine(); // spacing
 
                 championDecider(playerWeapon, computerWeapon); // Determine who the victor is based on user input and comp selection;
-                victoryCounter();//Counter for computer wins vs player wins within a single session
+                playerWins = championDecider(playerWeapon, computerWeapon).Item1; //param to pass into victoryCounter();
+                computerWins = championDecider(playerWeapon, computerWeapon).Item2; //param to pass into victoryCounter();
+                draws = championDecider(playerWeapon, computerWeapon).Item3; //param to pass into victoryCounter();
+                victoryMessage = championDecider(playerWeapon, computerWeapon).Item4; //param to pass into victoryCounter();
+
+                Console.WriteLine(victoryMessage); //Display who won the match;
+                Console.WriteLine(); // spacing;
+                Console.WriteLine("********************** Statistics ***********************");
+                Console.WriteLine(); // spacing;
+
+                victoryCounter(playerWins, computerWins, draws);
+                totalDraws += victoryCounter(playerWins, computerWins, draws).Item1;
+                totalPlayerWins += victoryCounter(playerWins, computerWins, draws).Item2;
+                totalComputerWins += victoryCounter(playerWins, computerWins, draws).Item3;
+
+                Console.WriteLine($"Total Draws: {totalDraws}");
+                Console.WriteLine($"Your Victories: {totalPlayerWins}");
+                Console.WriteLine($"Computer Victories: {totalComputerWins}");
+
                 isRunning = playAgain(); // play again? Prompt the user and restart the game;
             } while (isRunning);
         }
@@ -135,26 +160,36 @@ namespace RockPaperScissors
             return weaponName;
         }
 
-        static void championDecider(string myWeapon, string enemyWeapon)
-
-            // add a value indicator
-            //return an integer for player win status
-            //return an integer for computer win status
+        static (bool, bool, bool, string) championDecider(string myWeapon, string enemyWeapon)
         {
+            (bool playerWins, bool computerWins, bool draws) winners = (false, false, false);
+            string victoryMessage = " ";
+
             if (myWeapon == enemyWeapon)
             {
-                Console.WriteLine("Game is a draw");
+                victoryMessage = "Game is a draw";
+                winners.draws = true;
+                winners.playerWins = false;
+                winners.computerWins = false;
+
             }
 
             else if (myWeapon == "rock")
             {
                 if (enemyWeapon == "paper")
                 {
-                    Console.WriteLine("Computer wins :(");
+                    victoryMessage = "Computer wins :(";
+                    winners.draws = false;
+                    winners.playerWins = false;
+                    winners.computerWins = true;
+
                 }
                 else
                 {
-                    Console.WriteLine("You win! :D");
+                    victoryMessage = "You win! :D";
+                    winners.draws=false;
+                    winners.computerWins=false;
+                    winners.playerWins=true;
                 }
             }
 
@@ -162,11 +197,17 @@ namespace RockPaperScissors
             {
                 if (enemyWeapon == "scissors")
                 {
-                    Console.WriteLine("Computer wins :(");
+                    victoryMessage = "Computer wins :(";
+                    winners.draws = false;
+                    winners.playerWins = false;
+                    winners.computerWins = true;
                 }
                 else
                 {
-                    Console.WriteLine("You win! :D");
+                    victoryMessage = "You win! :D";
+                    winners.draws = false;
+                    winners.computerWins = false;
+                    winners.playerWins = true;
                 }
             }
 
@@ -174,26 +215,48 @@ namespace RockPaperScissors
             {
                 if (enemyWeapon == "rock")
                 {
-                    Console.WriteLine("Computer wins :(");
+                    victoryMessage = "Computer wins :(";
+                    winners.draws = false;
+                    winners.playerWins = false;
+                    winners.computerWins = true;
                 }
                 else
                 {
-                    Console.WriteLine("You win! :D");
+                    victoryMessage = "You win! :D";
+                    winners.draws = false;
+                    winners.computerWins = false;
+                    winners.playerWins = true;
                 }
             }
-
+            return (winners.playerWins, winners.computerWins, winners.draws, victoryMessage);
         }
 
-        static void victoryCounter()
+        static (int, int, int) victoryCounter(bool playerWon, bool computerWon, bool gameTied)
         {
+            int numOfDraws = 0;
+            int numOfPlayerWins = 0;
+            int numOfComputerWins = 0;
 
+            if (gameTied == true)
+            {
+                numOfDraws++;
+            }
+            else if(playerWon == true)
+            {
+                numOfPlayerWins++;
+            }
+            else
+            {
+                numOfComputerWins++;
+            }
+            return (numOfDraws, numOfPlayerWins, numOfComputerWins);
         }
 
         static bool playAgain()
         {
 
             Console.WriteLine();
-            Console.WriteLine("---------------------------------------------------------");
+            Console.WriteLine("--------------------------------------------------------");
             Console.WriteLine();
             Console.WriteLine("Do you want to play again?");
             Console.WriteLine("Enter 'Y' to play again or 'N' to exit");
