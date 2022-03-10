@@ -10,15 +10,14 @@ namespace RockPaperScissors
     {
         static void Main(string[] args)
         {
-            bool isRunning;
-            string playerWeapon;
-            int weaponNumber;
-            string computerWeapon;
-            var (playerWins, computerWins, draws, victoryMessage) = (false, false, false, " ");
-            //var (numberOfPlayerWins, numberOfComputerWins, numberOfDraws) = (0,0,0);
-            int totalDraws = 0;
-            int totalPlayerWins = 0;
-            int totalComputerWins = 0;
+            bool isRunning; // bool variable for keeping the game running;
+            string playerWeapon; // store the player's entry of R,P,S;
+            int weaponNumber; // store the random num for computer to select R,P,S;
+            string computerWeapon; // store the computer's choice of R,P,S;
+            var (playerWins, computerWins, draws, victoryMessage) = (false, false, false, " "); // store the bool vals to help the victory counter;
+            int totalDraws = 0; // will be used to store total # of Draws;
+            int totalPlayerWins = 0; // will be used to store total # of player wins;
+            int totalComputerWins = 0; // will be used to store total # of computer wins;
 
             Console.WriteLine("Do you want to play Rock, Paper, Scissors?");
             Console.WriteLine("Enter Y to play or N to exit");
@@ -50,10 +49,10 @@ namespace RockPaperScissors
                 Console.WriteLine("********************** Statistics ***********************");
                 Console.WriteLine(); // spacing;
 
-                victoryCounter(playerWins, computerWins, draws);
-                totalDraws += victoryCounter(playerWins, computerWins, draws).Item1;
-                totalPlayerWins += victoryCounter(playerWins, computerWins, draws).Item2;
-                totalComputerWins += victoryCounter(playerWins, computerWins, draws).Item3;
+                victoryCounter(playerWins, computerWins, draws); // It counts the number of draws and victories;
+                totalDraws += victoryCounter(playerWins, computerWins, draws).Item1; // allows the continuous update of # of draws every match;
+                totalPlayerWins += victoryCounter(playerWins, computerWins, draws).Item2; // allows the continuous update of # of player wins every match;
+                totalComputerWins += victoryCounter(playerWins, computerWins, draws).Item3; // allows the continuous update of # of computer wins every match;
 
                 Console.WriteLine($"Total Draws: {totalDraws}");
                 Console.WriteLine($"Your Victories: {totalPlayerWins}");
@@ -65,6 +64,11 @@ namespace RockPaperScissors
 
         static bool playGame()
         {
+
+            //Continously prompt the user for a valid entry of Y or N;
+            //put their response into a variable that allows some flexibility of how they enter Y or N;
+            //if no valid entry -> ask user to enter it again;
+
             string answer;
             string answerLC;
             string newAnswer;
@@ -99,6 +103,11 @@ namespace RockPaperScissors
 
         static string playerPicksWeapon()
         {
+
+            // Continously prompt user for R,P,S;
+            // if no valid entry, keep asking them for a valid entry;
+            // added toLowercase for some flexibility;
+
             Console.WriteLine("Rock, Paper, or Scissors?");
 
             bool runningStatus = true;
@@ -136,6 +145,9 @@ namespace RockPaperScissors
 
         static int weaponNumberGenerator()
         {
+
+            //generate a random number between 1-9;
+
             var rand = new Random();
             int numSelect = rand.Next(1, 9);
             return numSelect;
@@ -143,6 +155,8 @@ namespace RockPaperScissors
 
         static string computerPicksWeapon(int randNum)
         {
+            //determine a weapon choice based off the number passed into the method;
+
             string weaponName;
 
             if (randNum <= 3)
@@ -162,6 +176,11 @@ namespace RockPaperScissors
 
         static (bool, bool, bool, string) championDecider(string myWeapon, string enemyWeapon)
         {
+
+            // determine win conditions based on user's weapon choice;
+            // return a string to announce who won;
+            // return boolean values to assist the victoryCounter method;
+
             (bool playerWins, bool computerWins, bool draws) winners = (false, false, false);
             string victoryMessage = " ";
 
@@ -233,6 +252,11 @@ namespace RockPaperScissors
 
         static (int, int, int) victoryCounter(bool playerWon, bool computerWon, bool gameTied)
         {
+            // return integers of respective draws, player wins, and computer wins;
+            // take in the boolean values from championDecider();
+            // every loop iteration should reset the values and return the completed set of integers;
+            // the final values will be +='d to a variable in Main so everything doesn't get reset;
+
             int numOfDraws = 0;
             int numOfPlayerWins = 0;
             int numOfComputerWins = 0;
@@ -254,6 +278,9 @@ namespace RockPaperScissors
 
         static bool playAgain()
         {
+            // Continously Prompt the user for a valid entry if they want to play again;
+            // Should be similar to the initial playGame() method;
+            // the return value should be assigned to the value that is in the WHILE portion of the Do-while loop;
 
             Console.WriteLine();
             Console.WriteLine("--------------------------------------------------------");
